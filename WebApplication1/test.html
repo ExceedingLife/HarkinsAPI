@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <script src="Scripts/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#btnTestAdd").click(function () {
+
+                var TestDataAdd = {
+
+                    "FirstName": "TestFirst",
+                    "LastName": "TestLast",
+                    "DateCreated": "5/11/2019",
+                    "UserName": "TestUser",
+                    "Password": "mmmmmm",
+                    "Email": ""
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: '/api/values/PostUser',
+                    data: JSON.stringify(TestDataAdd),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data, status, xhr) {
+                        alert("the result is " + data);
+                    },
+                    error: function (xhr) {
+                        alert(xhr.responseText);
+                    }
+                })
+            })
+        })
+    </script>
+
+</head>
+<body>
+
+    <input type="button" id="btnTestAdd" value="Test Add" />
+
+</body>
+</html>

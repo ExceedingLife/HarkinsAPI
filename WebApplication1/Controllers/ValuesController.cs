@@ -4,11 +4,16 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using WebApplication1.Controllers;
+using WebApplication1.Controllers.Data_Access;
+using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
     public class ValuesController : ApiController
     {
+        private DataAccessUser da = new DataAccessUser();
+
         // GET api/values
         public IEnumerable<string> Get()
         {
@@ -22,8 +27,24 @@ namespace WebApplication1.Controllers
         }
 
         // POST api/values
-        public void Post([FromBody]string value)
+       // public void Post([FromBody]string value) { }
+       [HttpPost]
+       public IHttpActionResult PostUser([FromBody]User user)
         {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                da.CreateUser(user);
+                return Ok("User CREATED Successfully!!");
+            }
+            catch(Exception ex)
+            {
+                Console.Write(ex.Message);
+                return Ok("User POST wasn't successful...");
+            }
         }
 
         // PUT api/values/5
