@@ -14,21 +14,68 @@ namespace WebApplication1.Controllers
     {
         private DataAccessUser da = new DataAccessUser();
 
-        // GET api/values
-        public IEnumerable<string> Get()
+        // GET api/values/GetUsers
+        //public IEnumerable<string> Get()IEnumerable<User>
+        //[Route("users/all")]
+        [HttpGet]
+        public IHttpActionResult GetUsers()
         {
-            return new string[] { "value1", "value2" };
+            try
+            {
+                var dbUsers = da.GetAllUsers();
+                var lstUsers = new List<User>();
+
+                foreach(var user in dbUsers)
+                {
+                    lstUsers.Add(new User
+                    {
+                        UserId = user.UserId,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        DateCreated = user.DateCreated,
+                        Email = user.Email,
+                        UserName = user.UserName,
+                        Password = user.Password
+                    });
+                }
+                return Ok(lstUsers);
+                //return Ok("Retrieved ALL Users");
+            }
+            catch(Exception ex)
+            {
+                Console.Write(ex);
+                //return null;
+                throw;
+                //return BadRequest("Error Getting all Users");
+            }
+            
         }
 
-        // GET api/values/5
-        public string Get(int id)
+        // GET api/values/Get?id=3
+        //public string Get(int id)
+        [Route("api/values/Get/{id:int}")]
+        [HttpGet]
+        public IHttpActionResult Get(int id)
         {
-            return "value";
+            try
+            {
+                var user = da.GetUserById(id);
+                if(user == null)
+                {
+                    return NotFound();
+                }
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex);
+                throw;
+            }
         }
 
-        // POST api/values
-       // public void Post([FromBody]string value) { }
-       [HttpPost]
+        // POST api/values/PostUser
+        // public void Post([FromBody]string value) { }
+        [HttpPost]
        public IHttpActionResult PostUser([FromBody]User user)
         {
             try
@@ -43,18 +90,44 @@ namespace WebApplication1.Controllers
             catch(Exception ex)
             {
                 Console.Write(ex.Message);
-                return Ok("User POST wasn't successful...");
+                return BadRequest("User POST wasn't successful...");
             }
         }
 
-        // PUT api/values/5
-        public void Put(int id, [FromBody]string value)
+        // PUT api/values/PutUser?id=6
+        [HttpPut]
+        public IHttpActionResult PutUser(int id, [FromBody]User value)
         {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                da.UpdateUser(value);
+                return Ok(value);
+            }
+            catch(Exception ex)
+            {
+                Console.Write(ex);
+                throw;
+            }
         }
 
-        // DELETE api/values/5
-        public void Delete(int id)
+        // DELETE api/values/Delete?id=5
+        [HttpDelete]
+        public IHttpActionResult Delete(int id)
         {
+            try
+            {
+                da.DeleteUser(id);
+                return Ok("User Deleted Successfully");
+            }
+            catch(Exception ex)
+            {
+                Console.Write(ex);
+                throw;
+            }
         }
     }
 }

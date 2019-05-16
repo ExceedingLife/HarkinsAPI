@@ -20,8 +20,10 @@ namespace WebApplication1.Controllers.Data_Access
 
             using (SqlConnection conn = connString)
             {
-                SqlCommand cmd = new SqlCommand("spGetAllUsers", conn);
-                cmd.CommandType = CommandType.StoredProcedure;
+                SqlCommand cmd = new SqlCommand("spGetAllUsers", conn)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -72,13 +74,13 @@ namespace WebApplication1.Controllers.Data_Access
                 SqlCommand cmd = new SqlCommand("spUpdateUser", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.AddWithValue("@UserId", user.UserId);
-                cmd.Parameters.AddWithValue("@FirstName", user.FirstName);
-                cmd.Parameters.AddWithValue("@LastName", user.LastName);
-                cmd.Parameters.AddWithValue("@Email", user.Email);
-                cmd.Parameters.AddWithValue("@UserName", user.UserName);
-                cmd.Parameters.AddWithValue("@Password", user.Password);
-                cmd.Parameters.AddWithValue("@DateCreated", user.DateCreated);
+                cmd.Parameters.AddWithValue("@id", user.UserId);
+                cmd.Parameters.AddWithValue("@fn", user.FirstName);
+                cmd.Parameters.AddWithValue("@ln", user.LastName);
+                cmd.Parameters.AddWithValue("@em", user.Email);
+                cmd.Parameters.AddWithValue("@un", user.UserName);
+                cmd.Parameters.AddWithValue("@pw", user.Password);
+                cmd.Parameters.AddWithValue("@dc", user.DateCreated);
 
                 conn.Open();
                 cmd.ExecuteNonQuery();
@@ -122,7 +124,7 @@ namespace WebApplication1.Controllers.Data_Access
                 SqlCommand cmd = new SqlCommand("spDeleteUser", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.AddWithValue("@UserId", id);
+                cmd.Parameters.AddWithValue("@id", id);
 
                 conn.Open();
                 cmd.ExecuteNonQuery();

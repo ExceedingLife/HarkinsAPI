@@ -165,6 +165,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\apiDB.mdf" />
+    <Content Include="App_Data\apiDB_log.ldf">
+      <DependentUpon>apiDB.mdf</DependentUpon>
+    </Content>
     <Content Include="App_Data\WebAPI_DB.mdf" />
     <Content Include="App_Data\WebAPI_DB_log.ldf">
       <DependentUpon>WebAPI_DB.mdf</DependentUpon>
